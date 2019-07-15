@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<h1>这是基础设置页面标题</h1>
+<p>你好，我是基础设置页面内容</p>
+<button id="changeToTest1">点击切换到test1页面</button>
+<script src='../js/jquery-1.10.2.min.js'></script>
+<script>
+    $(function(){
+        $('#changeToTest1').on('click',function(){
+            $(window.parent.document).find('#contentIframe').attr('src','./test1.html')
+        })
+    })
+</script>
+</body>
+</html>
