@@ -55,7 +55,7 @@
 </nav>
 <ul class="layui-nav layui-nav-tree layui-inline side_left">
     <li class="layui-nav-item layui-this">
-        <a href="./index.html">
+        <a href="./index.html" >
             <i class="iconfont icon-shouye1"></i>
             首页
         </a>
@@ -68,7 +68,7 @@
     </li>
 </ul>
 <div class="layui-body content">
-    <iframe src="./main.html" width="100%" frameborder="0" id="contentIframe"></iframe>
+    <iframe src="./main.html" height="100%"  width="100%" frameborder="0" id="contentIframe" scrolling="no"></iframe>
 </div>
 </div>
 <script src="../js/layui-v2.5.4/jquery/jquery-1.10.2.min.js"></script>
@@ -77,6 +77,9 @@
     $(function(){
         $('#changeToSet').on('click',function(){
             $(window.parent.document).find('#contentIframe').attr('src', './set.html');
+            $(window.parent.document).find('#contentIframe').attr('width', '100%');
+            $(window.parent.document).find('#contentIframe').attr('height', '100%');
+            $(window.parent.document).find('#contentIframe').attr('scrolling', 'no');
             $(this).addClass('layui-this').siblings().removeClass('layui-this');
         })
     })

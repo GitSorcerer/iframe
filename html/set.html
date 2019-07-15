@@ -15,6 +15,9 @@
     $(function(){
         $('#changeToTest1').on('click',function(){
             $(window.parent.document).find('#contentIframe').attr('src','./test1.html')
+            $(window.parent.document).find('#contentIframe').attr('width', '100%');
+            $(window.parent.document).find('#contentIframe').attr('height', '100%');
+            $(window.parent.document).find('#contentIframe').attr('scrolling', 'no');
         })
     })
 </script>
