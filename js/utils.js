@@ -383,3 +383,24 @@ function cleanParams(datas){
     }
     return v_data;
 }
+
+/**
+ * 文件下载
+ * @param id
+ */
+function downloadFile(id) {
+    //由于无法直接使用Ajax下载 所以先拼接成form表单提交然后下载
+    var form = $("<form>");
+    form.attr("style","display:none");
+    form.attr("target", "");
+    form.attr("method","post");
+    form.attr("action",path + "/download.do");
+    var input1 = $("<input>");
+    input1.attr("type","hidden");
+    input1.attr("name","id");
+    input1.attr("value",id);
+    $("body").append(form);
+    form.append(input1);
+    form.submit();
+    form.remove();
+}
