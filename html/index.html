@@ -68,7 +68,7 @@
     </li>
 </ul>
 <div class="layui-body content">
-    <iframe src="./main.html" height="100%"  width="100%" frameborder="0" id="contentIframe" scrolling="no"></iframe>
+    <iframe src="./main.html" height="100%"  width="100%" frameborder="0" id="contentIframe" ></iframe>
 </div>
 </div>
 <script src="../js/layui-v2.5.4/jquery/jquery-1.10.2.min.js"></script>
@@ -79,7 +79,7 @@
             $(window.parent.document).find('#contentIframe').attr('src', './set.html');
             $(window.parent.document).find('#contentIframe').attr('width', '100%');
             $(window.parent.document).find('#contentIframe').attr('height', '100%');
-            $(window.parent.document).find('#contentIframe').attr('scrolling', 'no');
+            $(window.parent.document).find('#contentIframe').attr('scrolling', 'auto');
             $(this).addClass('layui-this').siblings().removeClass('layui-this');
         })
     })
