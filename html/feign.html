@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+<!--    <form id="paper" >-->
+        <input name="objtype" v-model="paper.objtype"><br/>
+        <input name="objid" v-model="paper.objid"><br/>
+        <input name="filename" v-model="paper.filename"><br/>
+        <input name="filetype" v-model="paper.filetype"><br/>
+        <button @click="select()">查询</button><br/>
+        <button @click="insert()">新增</button><br/>
+<!--    </form>-->
+  <ul v-for="(p,index) in papers">
+     <!-- <li>{{p.objid}}</li>
+      <li>{{p.objtype}}</li>
+      <li>{{p.filename}}</li>
+      <li>{{p.filetype}}</li>-->
+      <li v-text="p.objid"></li>
+      <li v-text="p.objtype"></li>
+      <li v-text="p.filename"></li>
+      <li v-text="p.filetype"></li>
+  </ul>
+</div>
+
+<!--
+<input id="path" type="text" name="path" size="30">
+<input type=button value="选择" onclick="browseFolder('path')">
+
+
+<input value="选择" type="file" webkitdirectory directory multiple/>
+
+<input id=b type=file webkitdirectory>
+
+-->
+<!--
+
+<input id="b" type="file" webkitdirectory>
+
+<table>
+    <tr>
+        <td>选择导入数据源：</td>
+        <td><input id="path" type="text" name="path" size="30"></td>
+        <td><input type=button value="选择" onclick="browseFolder('path')"></td>
+    </tr>
+</table>
+
+
+-->
+<input type="file" id="files" webkitdirectory directory multiple/>
+
+<input type="file" name="fileString" multiple class="file">
+</body>
+
+
+<script src="../js/layui-v2.5.4/jquery/jquery-1.10.2.min.js"> </script>
+<script src="../js/utils.js"> </script>
+<script src="../js/vue/vue.min.js"> </script>
+<script src="../js/vue/axios.min.js"> </script>
+<script src="../js/jquery.form.js"> </script>
+
+<script type="text/javascript">
+    var datas = {
+        paper:{
+            id:"",
+            objid:"",
+            objtype:"",
+            filename:"",
+            filetype:"",
+            filesize:"",
+            fileurl:"",
+            filepath:"",
+            suffixname:"",
+            createdate:"",
+            reserve1:"",
+            reserve2:"",
+            reserve3:""
+        },
+        papers: []
+    };
+    var vm = new Vue({
+        el: "#app",
+        data:datas,
+        methods: {
+            select() {
+                console.log("select");
+
+                var result = ajaxPost("http://localhost:8888/selectAll", "", "", "", "get");
+                // var result = ajaxPost("http://localhost:8888/selectAll");
+                this.papers = result;
+
+                console.log(JSON.stringify(this.paper));
+            },
+            insert(){
+                var $this = this;
+                console.log("insert");
+
+               /* alert(JSON.stringify({
+                    "objtype": $this.paper.objtype,
+                    "filename": $this.paper.filename,
+                    "filetype": $this.paper.filetype,
+                    "objid": $this.paper.objid
+                }));*/
+                axios.post("http://localhost:8888/insertsRequest", {
+                    obj:  {
+                        "objtype": $this.paper.objtype,
+                        "filename": $this.paper.filename,
+                        "filetype": $this.paper.filetype,
+                        "objid": $this.paper.objid
+                    } }).then(function (result) {
+                    alert(JSON.stringify(result));
+                }).catch(function (error) {
+
+                });
+
+                alert("ajaxPost");
+
+              /*  ajaxPost("http://localhost:8888/insertsRequest", {
+                    obj: JSON.stringify({
+                        "objtype": $this.paper.objtype,
+                        "filename": $this.paper.filename,
+                        "filetype": $this.paper.filetype,
+                        "objid": $this.paper.objid
+                    })
+                });*/
+
+                console.log(JSON.stringify(this.paper));
+            }
+
+        }
+
+    });
+
+  /*  function browseFolder() {
+        
+    }*/
+
+   /*  function browseFolder(path) {
+        try {
+            var Message = "\u8bf7\u9009\u62e9\u6587\u4ef6\u5939"; //选择框提示信息
+            var Shell = new ActiveXObject("Shell.Application");
+            var Folder = Shell.BrowseForFolder(0, Message, 64, 17); //起始目录为：我的电脑
+            //var Folder = Shell.BrowseForFolder(0,Message,0); //起始目录为：桌面
+            if (Folder != null) {
+                Folder = Folder.items(); // 返回 FolderItems 对象
+                Folder = Folder.item(); // 返回 Folderitem 对象
+                Folder = Folder.Path; // 返回路径
+                if (Folder.charAt(Folder.length - 1) != "") {
+                    Folder = Folder + "";
+                }
+                document.getElementByIdx_x(path).value = Folder;
+                return Folder;
+            }
+        } catch (e) {
+        }
+    }
+
+    document.querySelector('#b').addEventListener('change', e => {
+        for (let entry of e.target.files)
+            console.log(entry.name, entry.webkitRelativePath);
+    });*/
+
+   /* function browseFolder(path) {
+        try {
+            var Message = "\u8bf7\u9009\u62e9\u6587\u4ef6\u5939"; //选择框提示信息
+            var Shell = new ActiveXObject("Shell.Application");
+            var Folder = Shell.BrowseForFolder(0, Message, 64, 17); //起始目录为：我的电脑
+            //var Folder = Shell.BrowseForFolder(0, Message, 0); //起始目录为：桌面
+            if (Folder != null) {
+                Folder = Folder.items(); // 返回 FolderItems 对象
+                Folder = Folder.item(); // 返回 Folderitem 对象
+                Folder = Folder.Path; // 返回路径
+                if (Folder.charAt(Folder.length - 1) != "\\") {
+                    Folder = Folder + "\\";
+                }
+                document.getElementById(path).value = Folder;
+                return Folder;
+            }
+        }
+        catch (e) {
+            alert(e.message);
+        }
+    }*/
+
+    $("input[name=fileString]").change(function () {
+        //var names = [];
+
+        for (var i = 0; i < $(this).get(0).files.length; ++i) {
+            // names.push($(this).get(0).files[i].name);
+            //console.log($(this).get(0).files[i].mozFullPath);
+            //方式一：
+            var filePath = $(this).val();
+            alert(filePath);
+            console.log(filePath);
+            //方式二：
+            alert($('input[type=file]').val());
+        }
+        //console.log(names);
+        //方式三：
+        alert($("input[name=fileString]").val());
+
+    });
+</script>
+</html>

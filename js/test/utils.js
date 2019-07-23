@@ -60,7 +60,7 @@ function isEmptyObject(obj) {
  * @param paramType 参数类型 默认json
  * @returns
  */
-function ajaxPost(url, param, sync, paramType,type){
+function ajaxPost(url, param, sync, paramType){
     var path = $("#path").val();
     try{
         var obj = [];
@@ -79,13 +79,9 @@ function ajaxPost(url, param, sync, paramType,type){
         if(isBlankObj(paramType)){
             paramType = "json";
         }
-        if(isBlankObj(type)){
-            type ="POST";
-        }
             //添加新的属性并赋值
         $.ajax({
-            // contentType: 'application/json;charset=UTF-8',
-            type : type,
+            type : "POST",
             data : param,
             async: sync,
             url :  url,
@@ -250,7 +246,7 @@ function RegularExpression(reg,param) {
  * 切换行政区划下拉框
  * @param levels
  */
-function changeRegion(levels){
+/*function changeRegion(levels){
     if(isBlankObj(levels)){
         return;
     }
@@ -330,7 +326,7 @@ function changeRegion(levels){
         layer.msg("levels参数异常！");
         return;
     }
-}
+}*/
 /**
  * 增加input元素校验
  * @param id 元素ID
@@ -388,6 +384,7 @@ function cleanParams(datas){
     return v_data;
 }
 
+
 /**
  * 文件下载
  * @param id
@@ -408,3 +405,53 @@ function downloadFile(id) {
     form.submit();
     form.remove();
 }
+
+var RegExps = {
+    isRequired: /[\S]+/,
+    isNumber: /^[-\+]?\d+(\.\d+)?$/,
+    isEmail: /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/,
+    isMobile: /^1[0-9]{10}$/, //手机号(中国)
+    isTel: /0\d{2,3}-\d{7,8}/, // 座机号(中国)
+    isMobileTel: /^(0|86|17951)?(13[0-9]|15[012356789]|17[01678]|18[0-9]|14[57])[0-9]{8}$|^(0[0-9]{2,3}\-)([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$/, //同时允许手机号&座机号(中国) //86536455、0551-5555555、13888887777
+    isIdCard: /(^\d{15}$)|(^\d{17}[0-9Xx]$)/,
+    isMoney: /^\d{1,12}(?:\.\d{1,2})?$/,
+    isZip: /^[1-9]\d{5}$/,
+    isQQ: /^[1-9]\d{4,10}$/,
+    isInt: /^[-\+]?\d+$/, //整数
+    isPositive: /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/, //正数(包含小数)
+    isPositiveInt: /^[1-9]\d*$/, //正整数
+    isPositiveString: /^[0-9]\d*$/, //可以为0的正整数字符串
+    isPositiveZero: /^([1-9]\d*|[0]{1,1})$/, //非负整数(包括0)
+    isEnglish: /^[A-Za-z]+$/, //英文校验
+    isEnglishNumLine: /^[A-Za-z\d_]+$/, //只能输入英文、数字、下划线
+    isEnglishDot: /^[A-Za-z\d.]+$/, //只能输入英文、数字、点
+    isChineseEnglishNumLine: /^[\u4E00-\u9FA5-A-Za-z\d_\d/\//\（\）\(\)]+$/, //只能输入中文、英文、数字、下划线、正斜杠、小括号(下划线位置不限, 排除非法字符)
+    isChinese: /^[\u0391-\uFFE5]+$/,
+    isUrl: /^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/,
+    isDate: /^\d{4}-\d{1,2}-\d{1,2}$/,
+    isTime: /^\d{4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2}:\d{1,2}$/,
+    isAccount: /^[a-z]\w{3,}$/i, //账号校验
+    isPassword: /^.{5,20}[0-9a-zA-Z,.;?@]$/,
+    isEnglishChinese: /^[A-Za-z\u0391-\uFFE5]+$/i,
+    isTableName: /^[a-z]\w*$/i,
+    isSymbols: /^[\w\u0391-\uFFE5]+$/i,
+    isNum: /^\d+$/i,
+    isXs: /^[0-9]+(\.[0-9]{0,2})?$/,
+    isXs2: /^\d{1}(?:\.\d{1,2})?$/,
+    isScore: /^[-\+]?\d+(\.\d{0,1})?$/,
+    isScore1: /^[+]?\d+(\.\d{0,1})?$/,
+    isZInt: /^[+]?\d+$/,
+    isDateT: /^\d{4}-\d{1,2}-\d{1,2}.\d{1,2}:\d{1,2}$/,
+    isNoNegativeInt: /^\d+$/,
+    isAphone: /^([0-9-]+)$/,
+    isGRF: /^[A-Za-z/_0-9]+\.grf$/,  // 只能输入字母、下划线、数字，并且以.grf结尾
+    isCron: "",
+    isRepsd: "",
+    isBenchmark: /^[-\+]?\d{1,12}(\.\d{1,4})?$/,//基准进价(元) 12位整数后小数四位 //by gaojc begin
+    isNumNew: /^[-\+]?\d{1,9}(\.\d{1,2})?$/,  //输入数字(9位整数后小数3位)
+    isTaxation: /^[0](.[0-9]{1,4})?$/,    //进项税  输入数字(0点小数后四位)。
+    isPackage:/^[-\+]?\d{1,11}(\.\d{1,3})?$/  , // 包装 输入数字(11位整数后小数3位)。
+    isStock:/^[-\+]?\d{1,7}(\.\d{1,3})?$/,  // 7位整数后小数3位         //by gaojc  end
+    isVehicle:/^[0-9]+(.[0-9]{1,4})?$/,   //0-9开头 后面1-4位小数(车辆位置用到)
+    isPrice: /^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$/  //两位小数
+};
