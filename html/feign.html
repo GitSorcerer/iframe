@@ -60,6 +60,7 @@
 <script src="../js/utils.js"> </script>
 <script src="../js/vue/vue.min.js"> </script>
 <script src="../js/vue/axios.min.js"> </script>
+<script src="../js/vue/vue-resource.js"> </script>
 <script src="../js/jquery.form.js"> </script>
 
 <script type="text/javascript">
@@ -184,24 +185,27 @@
             alert(e.message);
         }
     }*/
-
-    $("input[name=fileString]").change(function () {
-        //var names = [];
-
-        for (var i = 0; i < $(this).get(0).files.length; ++i) {
-            // names.push($(this).get(0).files[i].name);
-            //console.log($(this).get(0).files[i].mozFullPath);
-            //方式一：
-            var filePath = $(this).val();
-            alert(filePath);
-            console.log(filePath);
-            //方式二：
-            alert($('input[type=file]').val());
+    var demo = new Vue({
+        el: '#app',
+        data: {
+            gridColumns: ['customerId', 'companyName', 'contactName', 'phone'],
+            gridData: [],
+            apiUrl: 'http://192.168.118.221:8080/api/customers'
+        },
+        mounted: function() {
+            this.getCustomers()
+        },
+        methods: {
+            getCustomers: function() {
+                this.$http.get(this.apiUrl).then((response) => {
+                    this.$set('gridData', response.data)
+                },(response) => {
+                    console.log("出错了");
+                }).catch(function(response) {
+                    console.log(response)
+                })
+            }
         }
-        //console.log(names);
-        //方式三：
-        alert($("input[name=fileString]").val());
-
     });
 </script>
 </html>
